@@ -74,10 +74,12 @@
 	 "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n*$"
 	 (point-at-eol) t)
     (let ((lang (match-string-no-properties 1)))
-      (let ((s-mode (pm-get-mode-symbol-from-name lang)))
-	(if s-mode
-	    s-mode
-	  "text-mode")))))
+      (if (string= lang "shell")
+	  "shell-script-mode"
+	(let ((s-mode (pm-get-mode-symbol-from-name lang)))
+	  (if s-mode
+	      s-mode
+	    "text-mode"))))))
 
 (define-auto-innermode poly-asciidoc-source-code-innermode
   poly-asciidoc-root-innermode
