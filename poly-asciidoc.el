@@ -68,7 +68,7 @@
 
 (define-auto-innermode poly-asciidoc-source-code-innermode
   poly-asciidoc-root-innermode
-  :head-matcher 'poly-asciidoc-source-header-matcher
+  :head-matcher 'poly-asciidoc-source-head-matcher
   :tail-matcher 'poly-asciidoc-source-tail-matcher
   :mode-matcher (cons "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n----[-]*$" 1))
 
