@@ -74,6 +74,7 @@
 	 "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n*$"
 	 (point-at-eol) t)
     (let ((lang (match-string-no-properties 1)))
+      (message "lang is %s" lang)
       (if (string= lang "shell")
 	  "shell-script-mode"
 	(let ((s-mode (pm-get-mode-symbol-from-name lang)))
