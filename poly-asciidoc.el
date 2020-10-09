@@ -56,9 +56,9 @@
 
 (define-auto-innermode poly-asciidoc-source-code-innermode
   poly-asciidoc-root-innermode
-  :head-matcher (cons "^\\(\\[source,[ \t]*[^ \t\n\r]+[ \t\n]*\\]\n----[-]*\\)$" 1)
+  :head-matcher (cons "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\]\n----[-]*\\)$" 1)
   :tail-matcher (cons "^----[-]*$" 1)
-  :mode-matcher (cons "^\\[source,[ \t]*\\([^ \t\n\r]+\\)[ \t\n]*\\]\n----[-]*$" 1))
+  :mode-matcher (cons "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n----[-]*$" 1))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
