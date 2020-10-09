@@ -71,12 +71,13 @@
 
 (defun poly-asciidoc-source-mode-matcher ()
   (when (re-search-forward
-	 "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n----[-]*$"
+	 "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n*$"
 	 (point-at-eol) t)
     (let ((lang (match-string-no-properties 1)))
-      (cond
-       ((string= lang "shell") 'shell-script-mode)
-       (t 'text-mode)))))
+      (let ((s-mode (pm-get-mode-symbol-from-name lang)))
+	(if s-mode
+	    s-mode
+	  "text-mode")))))
 
 (define-auto-innermode poly-asciidoc-source-code-innermode
   poly-asciidoc-root-innermode
