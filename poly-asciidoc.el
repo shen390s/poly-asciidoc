@@ -39,7 +39,6 @@
 (require 'adoc-mode)
 
 ;; Declarations
-(defvar asciidoc-enable-math)
 
 (define-obsolete-variable-alias 'pm-host/asciidoc 'poly-asciidoc-hostmode "v0.0.1")
 (define-obsolete-variable-alias 'pm-inner/asciidoc-source-code 'poly-asciidoc-source-code-innermode "v0.0.1")
@@ -71,4 +70,4 @@
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.adoc\\'" . poly-asciidoc-mode))
 
-(provide 'poly-asciidoc)
+(provide 'poly-asciidoc-mode)
