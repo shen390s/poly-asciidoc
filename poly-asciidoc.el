@@ -74,7 +74,6 @@
 	 "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n*$"
 	 (point-at-eol) t)
     (let ((lang (match-string-no-properties 1)))
-      (message "lang is %s" lang)
       (if (string= lang "shell")
 	  "shell-script-mode"
 	(let ((s-mode (pm-get-mode-symbol-from-name lang)))
@@ -88,10 +87,27 @@
   :tail-matcher 'poly-asciidoc-source-tail-matcher
   :mode-matcher 'poly-asciidoc-source-mode-matcher)
 
+(defun poly-asciidoc-ditaa-head-matcher (count)
+  (when (re-search-forward
+	 "^\\(\\[ditaa,[^[]]*\\]\n----[-]*\\)$" nil t
+	 count)
+    (cons (match-beginning 0)
+	  (match-end 0))))
+
+(defun poly-asciidoc-ditaa-mode-matcher ()
+  "artist-mode")
+
+(define-auto-innermode poly-asciidoc-ditaa-code-innermode
+  poly-asciidoc-root-innermode
+  :head-matcher 'poly-asciidoc-ditaa-head-matcher
+  :tail-matcher 'poly-asciidoc-source-tail-matcher
+  :mode-matcher 'poly-asciidoc-ditaa-mode-matcher)
+
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
   :hostmode 'poly-asciidoc-hostmode
   :innermodes '(poly-asciidoc-source-code-innermode
+		poly-asciidoc-ditaa-code-innermode
                 ;;
 		))
 
