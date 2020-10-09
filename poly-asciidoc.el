@@ -54,10 +54,22 @@
   :head-mode 'host
   :tail-mode 'host)
 
+(defun poly-asciidoc-source-head-matcher (count)
+  (when (re-search-forward
+	 "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\]\n----[-]*\\)$" nil t
+	 count)
+    (cons (match-begining 0)
+	  (match-end 0))))
+
+(defun poly-asciidoc-source-tail-matcher (count)
+  (when (re-search-forward "^----[-]*$" nil t)
+    (cons (match-beginning 0)
+	  (match-end 0))))
+
 (define-auto-innermode poly-asciidoc-source-code-innermode
   poly-asciidoc-root-innermode
-  :head-matcher (cons "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\]\n----[-]*\\)$" 1)
-  :tail-matcher (cons "^----[-]*$" 1)
+  :head-matcher 'poly-asciidoc-source-header-matcher
+  :tail-matcher 'poly-asciidoc-source-tail-matcher
   :mode-matcher (cons "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n----[-]*$" 1))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
