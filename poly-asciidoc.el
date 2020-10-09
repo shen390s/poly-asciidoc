@@ -72,8 +72,8 @@
 	 (point-at-eol) t)
     (let ((lang (match-string-no-properties 1)))
       (cond
-       ((string= lang "shell") 'shell-mode)
-       (t 'text-mode)))))
+       ((string= lang "shell") "shell-mode")
+       (t "text-mode")))))
 
 (define-auto-innermode poly-asciidoc-source-code-innermode
   poly-asciidoc-root-innermode
