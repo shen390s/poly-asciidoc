@@ -66,11 +66,20 @@
     (cons (match-beginning 0)
 	  (match-end 0))))
 
+(defun poly-asciidoc-source-mode-matcher ()
+  (when (re-search-forward
+	 "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n----[-]*$"
+	 (point-at-eol) t)
+    (let ((lang (match-string-no-properties 1)))
+      (cond
+       ((string= lang "shell") 'shell-mode)
+       (t 'text-mode)))))
+
 (define-auto-innermode poly-asciidoc-source-code-innermode
   poly-asciidoc-root-innermode
   :head-matcher 'poly-asciidoc-source-head-matcher
   :tail-matcher 'poly-asciidoc-source-tail-matcher
-  :mode-matcher (cons "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n----[-]*$" 1))
+  :mode-matcher 'poly-asciidoc-source-mode-matcher)
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
