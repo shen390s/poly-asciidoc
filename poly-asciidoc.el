@@ -58,7 +58,7 @@
   (when (re-search-forward
 	 "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\]\n----[-]*\\)$" nil t
 	 count)
-    (cons (match-begining 0)
+    (cons (match-beginning 0)
 	  (match-end 0))))
 
 (defun poly-asciidoc-source-tail-matcher (count)
