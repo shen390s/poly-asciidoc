@@ -1,2 +1,2 @@
 # poly-asciidoc
-Poly asciidoctor mode
+Polymode for asciidoctor
