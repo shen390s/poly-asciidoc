@@ -94,7 +94,7 @@
 
 (defun poly-asciidoc-ditaa-head-matcher (count)
   (when (re-search-forward
-	 "^\\(\\[ditaa\\([ \t]*,[^\n]*\\)\\]\n----[-]*\\)$" nil t
+	 "^\\(\\[ditaa\\([ \t]*,[^\n]*\\)?\\]\n----[-]*\\)$" nil t
 	 count)
     (cons (match-beginning 0)
 	  (match-end 0))))
