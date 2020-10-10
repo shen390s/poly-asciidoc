@@ -87,7 +87,7 @@
 (defun poly-asciidoc-view ()
   (interactive)
   (let ((dst-file-name (concat (buffer-file-name)
-                               (poly-asciidoc-output-format))))
+                               (symbol-name poly-asciidoc-output-format))))
     (if (file-exists-p dst-file-name)
         (find-file-other-window dst-file-name)
       (error "Please compile the it first!\n"))))
