@@ -54,7 +54,7 @@
   :head-mode 'host
   :tail-mode 'host)
 
-(defun poly-asciidoc-remove-asciidoc-hooks ()
+(defun poly-asciidoc-remove-asciidoc-hooks (host)
   t)
 
 (defun poly-asciidoc-source-head-matcher (count)
