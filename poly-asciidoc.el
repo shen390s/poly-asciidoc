@@ -38,6 +38,10 @@
 (require 'polymode)
 (require 'adoc-mode)
 
+(defconst tag-pattern
+  "^\\[%s\\([ \t]*,[ \t]*\\w+\\)*[ \t]*\\][ \t]*\n-\\{4,\\}[ \t]*$"
+  "patten template for tag")
+
 (defun poly-asciidoc-compilation-mode-hook ()
   "Hook function to set local value for `compilation-error-screen-columns'."
   ;; In Emacs > 20.7 compilation-error-screen-columns is buffer local.
@@ -54,26 +58,49 @@
 (defvar poly-asciidoc-compiler "poly-asciidoc"
   "The compiler used to generate output")
 
-;; (defvar poly-asciidoc-mode-map
-;;   (let ((map (make-sparse-keymap)))
-;;     ;; add key bindings for poly-asciidoc mode here
-;;     ;;
-;;     (define-key map "\C-c\C-c" 'poly-asciidoc-compile)
-;;     (define-key map "\C-c\C-v" 'poly-asciidoc-view)
-;;     map)
-;;   "Keymap for poly-asciidoc mode")
-
 (defun poly-asciidoc-compiler (output-format)
   (cond
    ((string= output-format "pdf") "asciidoctor-pdf")
    ((string= output-format "html") "asciidoctor")
    (t "true")))
 
+(defun poly-asciidoc-check-tag (tag)
+  (save-excursion
+    (goto (point-min))
+    (re-search-forward (format tag-pattern tag)
+		       nil t 1)))
+
+(defun poly-asciidoc-check-tags (tags)
+  (if (null tags)
+      nil
+    (if (poly-asciidoc-check-tag (car tags))
+	t
+      (poly-asciidoc-check-tags (cdr  tags)))))
+
+(defun poly-asciidoc-check-diagram ()
+  (interactive)
+  (poly-asciidoc-check-tags '(a2s actdiag blockdiag bpmn
+				  bytefield ditaa dpic erd
+				  gnuplot graphviz meme
+				  mermaid msc nomnoml nwdiag
+				  packetdiag pikchr plantuml
+				  rackdiag seqdiag shaape smcat
+				  svgbob syntrax umlet vega
+				  vega vegalite wavedrom)))
+
+(defun poly-asciidoc-compile-options (output-format)
+  (setq options "")
+  (progn
+    (when (poly-asciidoc-check-diagram)
+      (setq options (format "%s -r asciidoctor-diagram" options))))
+  options)
+
 ;;;###autoload
 (defun poly-asciidoc-compile ()
   (interactive)
-  (let ((cmd (format "%s %s"
+  (let ((cmd (format "%s %s %s"
 		     (poly-asciidoc-compiler (symbol-name poly-asciidoc-output-format))
+		     (poly-asciidoc-compile-options)
                      (buffer-file-name)))
         (buf-name "*poly-asciidoc compilation")
         (compilation-mode-hook (cons 'poly-asciidoc-compilation-mode-hook compilation-mode-hook)))
@@ -99,10 +126,6 @@
 (define-obsolete-variable-alias 'pm-host/asciidoc 'poly-asciidoc-hostmode "v0.0.1")
 (define-obsolete-variable-alias 'pm-inner/asciidoc-source-code 'poly-asciidoc-source-code-innermode "v0.0.1")
 (define-obsolete-variable-alias 'pm-poly/asciidoc 'poly-asciidoc-polymode "v0.0.1")
-
-(defconst tag-pattern
-  "^\\[%s\\([ \t]*,[ \t]*\\w+\\)*[ \t]*\\][ \t]*\n-\\{4,\\}[ \t]*$"
-  "patten template for tag")
 
 (define-hostmode poly-asciidoc-hostmode
   :mode 'adoc-mode
@@ -153,7 +176,6 @@
   :mode-matcher 'poly-asciidoc-source-mode-matcher)
 
 (defun poly-asciidoc-tag-head-matcher (tag count)
-  (message "search tag %s count %d" tag count)
   (when (re-search-forward (format tag-pattern tag) 
 		           nil t count)
     (cons (match-beginning 0)
