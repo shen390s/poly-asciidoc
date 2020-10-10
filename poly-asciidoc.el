@@ -44,6 +44,10 @@
 (define-obsolete-variable-alias 'pm-inner/asciidoc-source-code 'poly-asciidoc-source-code-innermode "v0.0.1")
 (define-obsolete-variable-alias 'pm-poly/asciidoc 'poly-asciidoc-polymode "v0.0.1")
 
+(defconst tag-pattern
+  "^\\[%s\\([ \t]*,[ \t]*\\w+\\)*[ \t]*\\][ \t]*\n-\\{4,\\}[ \t]*$"
+  "patten template for tag")
+
 (define-hostmode poly-asciidoc-hostmode
   :mode 'adoc-mode
   :init-functions '(poly-asciidoc-remove-asciidoc-hooks))
@@ -94,13 +98,10 @@
 
 (defun poly-asciidoc-tag-head-matcher (tag count)
   (message "search tag %s count %d" tag count)
-  (when (re-search-forward "^\\[\\(\\w+\\)\\([ \t]*,[ \t]*\\w+\\)*[ \t]*\\][ \t]*\n-\\{4,\\}[ \t]*$"
+  (when (re-search-forward (format tag-pattern tag) 
 		           nil t count)
-    (let ((mtag (match-string 1)))
-      (message "mtag is %s" mtag)
-      (when (string= mtag tag)
-	  (cons (match-beginning 0)
-		(match-end 0))))))
+    (cons (match-beginning 0)
+	  (match-end 0))))
 
 (defun poly-asciidoc-ditaa-head-matcher (count)
   (poly-asciidoc-tag-head-matcher "ditaa" count))
