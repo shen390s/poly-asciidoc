@@ -73,7 +73,7 @@
   (cond
    ((string= lang "shell") "shell-script-mode")
    ((string= lang "asciidoc") "adoc-mode")
-   ((string= lang "yaml") "lang/yaml-mode")
+   ((string= lang "yaml") "yaml-mode")
    (t (let ((s-mode (pm-get-mode-symbol-from-name lang)))
 	(if s-mode
 	    s-mode
