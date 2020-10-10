@@ -98,10 +98,9 @@
 		           nil t count)
     (let ((mtag (match-string 1)))
       (message "mtag is %s" mtag)
-      (if (string= mtag tag)
+      (when (string= mtag tag)
 	  (cons (match-beginning 0)
-		(match-end 0))
-	nil))))
+		(match-end 0))))))
 
 (defun poly-asciidoc-ditaa-head-matcher (count)
   (poly-asciidoc-tag-head-matcher "ditaa" count))
