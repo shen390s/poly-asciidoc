@@ -72,6 +72,7 @@
 (defun poly-asciidoc-get-lang-mode (lang)
   (cond
    ((string= lang "shell") "shell-script-mode")
+   ((string= lang "asciidoc") "adoc-mode")
    (t (let ((s-mode (pm-get-mode-symbol-from-name lang)))
 	(if s-mode
 	    s-mode
