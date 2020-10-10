@@ -69,17 +69,20 @@
     (cons (match-beginning 0)
 	  (match-end 0))))
 
+(defun poly-asciidoc-get-lang-mode (lang)
+  (cond
+   ((string= lang "shell") "shell-script-mode")
+   (t (let ((s-mode (pm-get-mode-symbol-from-name lang)))
+	(if s-mode
+	    s-mode
+	  "text-mode")))))
+
 (defun poly-asciidoc-source-mode-matcher ()
   (when (re-search-forward
 	 "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n*$"
 	 (point-at-eol) t)
     (let ((lang (match-string-no-properties 1)))
-      (if (string= lang "shell")
-	  "shell-script-mode"
-	(let ((s-mode (pm-get-mode-symbol-from-name lang)))
-	  (if s-mode
-	      s-mode
-	    "text-mode"))))))
+      (poly-asciidoc-get-lang-mode lang))))
 
 (define-auto-innermode poly-asciidoc-source-code-innermode
   poly-asciidoc-root-innermode
