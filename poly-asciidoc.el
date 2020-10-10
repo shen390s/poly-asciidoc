@@ -81,7 +81,7 @@
         (compilation-start cmd nil
                            #'(lambda (mode-name)
                                buf-name))
-      (compile-internal cmd "No more errors" buf-name))))
+      (compile-internal cmd "No more errors" buf-name)))
 
 ;;;###autoload
 (defun poly-asciidoc-view ()
