@@ -66,7 +66,7 @@
 
 (defun poly-asciidoc-check-tag (tag)
   (save-excursion
-    (goto (point-min))
+    (goto-char (point-min))
     (re-search-forward (format tag-pattern tag)
 		       nil t 1)))
 
