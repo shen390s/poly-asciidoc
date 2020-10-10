@@ -100,7 +100,7 @@
   (interactive)
   (let ((cmd (format "%s %s %s"
 		     (poly-asciidoc-compiler (symbol-name poly-asciidoc-output-format))
-		     (poly-asciidoc-compile-options)
+		     (poly-asciidoc-compile-options poly-asciidoc-output-format)
                      (buffer-file-name)))
         (buf-name "*poly-asciidoc compilation")
         (compilation-mode-hook (cons 'poly-asciidoc-compilation-mode-hook compilation-mode-hook)))
