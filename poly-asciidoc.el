@@ -93,6 +93,7 @@
   :mode-matcher 'poly-asciidoc-source-mode-matcher)
 
 (defun poly-asciidoc-tag-head-matcher (tag count)
+  (message "search tag %s count %d" tag count)
   (when (re-search-forward "^\\[\\(\\w+\\)\\([ \t]*,[ \t]*\\w+\\)*[ \t]*\\][ \t]*\n-\\{4,\\}[ \t]*$"
 		           nil t count)
     (let ((mtag (match-string 1)))
