@@ -86,7 +86,8 @@
 ;;;###autoload
 (defun poly-asciidoc-view ()
   (interactive)
-  (let ((dst-file-name (concat (buffer-file-name)
+  (let ((dst-file-name (format "%s.%s"
+			       (file-name-sans-extension (buffer-file-name))
                                (symbol-name poly-asciidoc-output-format))))
     (if (file-exists-p dst-file-name)
         (find-file-other-window dst-file-name)
