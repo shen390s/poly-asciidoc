@@ -38,6 +38,61 @@
 (require 'polymode)
 (require 'adoc-mode)
 
+(defun poly-asciidoc-compilation-mode-hook ()
+  "Hook function to set local value for `compilation-error-screen-columns'."
+  ;; In Emacs > 20.7 compilation-error-screen-columns is buffer local.
+  (or (assq 'compilation-error-screen-columns (buffer-local-variables))
+      (make-local-variable 'compilation-error-screen-columns))
+  (setq compilation-error-screen-columns nil))
+
+(defvar poly-asciidoc-output-format 'pdf
+  "The format of generated file")
+
+(defvar poly-asciidoc-verbose nil
+  "Show verbose information when run compiler")
+
+(defvar poly-asciidoc-compiler "poly-asciidoc"
+  "The compiler used to generate output")
+
+;; (defvar poly-asciidoc-mode-map
+;;   (let ((map (make-sparse-keymap)))
+;;     ;; add key bindings for poly-asciidoc mode here
+;;     ;;
+;;     (define-key map "\C-c\C-c" 'poly-asciidoc-compile)
+;;     (define-key map "\C-c\C-v" 'poly-asciidoc-view)
+;;     map)
+;;   "Keymap for poly-asciidoc mode")
+
+(defun poly-asciidoc-compiler (output-format)
+  (cond
+   ((string= output-format "pdf") "asciidoctor-pdf")
+   ((string= output-format "html") "asciidoctor")
+   (t "true")))
+
+;;;###autoload
+(defun poly-asciidoc-compile ()
+  (interactive)
+  (let ((cmd (format "%s %s"
+		     (poly-asciidoc-compiler (symbol-name poly-asciidoc-output-format))
+                     (buffer-file-name))))
+        (buf-name "*poly-asciidoc compilation")
+        (compilation-mode-hook (cons 'poly-asciidoc-compilation-mode-hook compilation-mode-hook)))
+    (if (fboundp 'compilation-start)
+        (compilation-start cmd nil
+                           #'(lambda (mode-name)
+                               buf-name))
+      (compile-internal cmd "No more errors" buf-name))))
+
+;;;###autoload
+(defun poly-asciidoc-view ()
+  (interactive)
+  (let ((dst-file-name (concat (buffer-file-name)
+                               (poly-asciidoc-output-ext))))
+    (if (file-exists-p dst-file-name)
+        (find-file-other-window dst-file-name)
+      (error "Please compile the it first!\n"))))
+
+
 ;; Declarations
 
 (define-obsolete-variable-alias 'pm-host/asciidoc 'poly-asciidoc-hostmode "v0.0.1")
