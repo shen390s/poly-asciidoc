@@ -74,16 +74,14 @@
   (interactive)
   (let ((cmd (format "%s %s"
 		     (poly-asciidoc-compiler (symbol-name poly-asciidoc-output-format))
-                     (buffer-file-name))))
+                     (buffer-file-name)))
         (buf-name "*poly-asciidoc compilation")
         (compilation-mode-hook (cons 'poly-asciidoc-compilation-mode-hook compilation-mode-hook)))
     (if (fboundp 'compilation-start)
         (compilation-start cmd nil
                            #'(lambda (mode-name)
                                buf-name))
-      (compile-internal cmd "No more errors"
-			#'(lambda (mode-name)
-			    buf-name))))
+      (compile-internal cmd "No more errors" buf-name))))
 
 ;;;###autoload
 (defun poly-asciidoc-view ()
