@@ -59,13 +59,13 @@
 
 (defun poly-asciidoc-source-head-matcher (count)
   (when (re-search-forward
-	 "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\]\n----[-]*\\)$" nil t
+	 "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\][ \t]*\n----[-]*[ \t]*\\)$" nil t
 	 count)
     (cons (match-beginning 0)
 	  (match-end 0))))
 
 (defun poly-asciidoc-source-tail-matcher (count)
-  (when (re-search-forward "^----[-]*$" nil t)
+  (when (re-search-forward "^----[-]*[ \t]*$" nil t)
     (cons (match-beginning 0)
 	  (match-end 0))))
 
