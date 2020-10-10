@@ -65,7 +65,7 @@
 	  (match-end 0))))
 
 (defun poly-asciidoc-source-tail-matcher (count)
-  (when (re-search-forward "^----[-]*[ \t]*$" nil t)
+  (when (re-search-forward "^-\\{4,\\}[ \t]*$" nil t)
     (cons (match-beginning 0)
 	  (match-end 0))))
 
@@ -100,7 +100,8 @@
       (message "mtag is %s" mtag)
       (if (string= mtag tag)
 	  (cons (match-beginning 0)
-		(match-end 0))))))
+		(match-end 0))
+	nil))))
 
 (defun poly-asciidoc-ditaa-head-matcher (count)
   (poly-asciidoc-tag-head-matcher "ditaa" count))
