@@ -4,7 +4,7 @@
 ;; Maintainer: Rongsong Shen
 ;; Copyright (C) 2020
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "25") (polymode "0.2.2") (adoc-mode ))
+;; Package-Requires: ((emacs "25") (polymode "0.2.2") (adoc-mode "0.6.6"))
 ;; URL: https://github.com/shen390s/poly-asciidoc
 ;; Keywords: emacs
 ;;
