@@ -56,7 +56,7 @@
       (make-local-variable 'compilation-error-screen-columns))
   (setq compilation-error-screen-columns nil))
 
-(defvar poly-asciidoc-output-format 'epub
+(defvar poly-asciidoc-output-format 'pdf
   "The format of generated file")
 
 (defvar poly-asciidoc-verbose nil
@@ -126,6 +126,13 @@
         (find-file-other-window dst-file-name)
       (error "Please compile the it first!\n"))))
 
+;;;###autoload
+(defun poly-asciidoc-set-output-format ()
+  (interactive)
+  (setq poly-asciidoc-output-format
+	(intern (completing-read "Choose output format:"
+				 '(("pdf" 1) ("html" 2) ("epub" 3))
+				 nil t "" nil "pdf"))))
 
 ;; Declarations
 
