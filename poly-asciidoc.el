@@ -42,6 +42,13 @@
   "^\\[%s\\([ \t]*,[ \t]*\\w+\\)*[ \t]*\\][ \t]*\n-\\{4,\\}[ \t]*$"
   "patten template for tag")
 
+(defconst asciidoc-diagram-tags
+  '(a2s actdiag blockdiag bpmn bytefield ditaa dpic erd
+	gnuplot graphviz meme mermaid msc nomnoml nwdiag
+	packetdiag pikchr plantuml rackdiag seqdiag shaape smcat
+	svgbob syntrax umlet vega vega vegalite wavedrom)
+  "tags which need asciidoctor-diagram")
+
 (defun poly-asciidoc-compilation-mode-hook ()
   "Hook function to set local value for `compilation-error-screen-columns'."
   ;; In Emacs > 20.7 compilation-error-screen-columns is buffer local.
@@ -49,7 +56,7 @@
       (make-local-variable 'compilation-error-screen-columns))
   (setq compilation-error-screen-columns nil))
 
-(defvar poly-asciidoc-output-format 'pdf
+(defvar poly-asciidoc-output-format 'epub
   "The format of generated file")
 
 (defvar poly-asciidoc-verbose nil
@@ -62,6 +69,7 @@
   (cond
    ((string= output-format "pdf") "asciidoctor-pdf")
    ((string= output-format "html") "asciidoctor")
+   ((string= output-format "epub") "asciidoctor")
    (t "true")))
 
 (defun poly-asciidoc-check-tag (tag)
@@ -79,20 +87,18 @@
 
 (defun poly-asciidoc-check-diagram ()
   (interactive)
-  (poly-asciidoc-check-tags '(a2s actdiag blockdiag bpmn
-				  bytefield ditaa dpic erd
-				  gnuplot graphviz meme
-				  mermaid msc nomnoml nwdiag
-				  packetdiag pikchr plantuml
-				  rackdiag seqdiag shaape smcat
-				  svgbob syntrax umlet vega
-				  vega vegalite wavedrom)))
+  (poly-asciidoc-check-tags asciidoc-diagram-tags))
 
 (defun poly-asciidoc-compile-options (output-format)
   (setq options "")
   (progn
     (when (poly-asciidoc-check-diagram)
-      (setq options (format "%s -r asciidoctor-diagram" options))))
+      (setq options (format "%s -r asciidoctor-diagram" options)))
+    (cond
+     ((string= output-format "epub")
+      (setq options (format "%s -r asciidoctor-epub3 -b epub3 "
+			    options)))
+     (t t)))
   options)
 
 ;;;###autoload
@@ -100,7 +106,7 @@
   (interactive)
   (let ((cmd (format "%s %s %s"
 		     (poly-asciidoc-compiler (symbol-name poly-asciidoc-output-format))
-		     (poly-asciidoc-compile-options poly-asciidoc-output-format)
+		     (poly-asciidoc-compile-options (symbol-name poly-asciidoc-output-format))
                      (buffer-file-name)))
         (buf-name "*poly-asciidoc compilation")
         (compilation-mode-hook (cons 'poly-asciidoc-compilation-mode-hook compilation-mode-hook)))
