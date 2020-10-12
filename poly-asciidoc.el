@@ -60,7 +60,7 @@
 	   (mode-matcher ',(poly-asciidoc-mkfun tag "mode"))
 	   (mode-fun ',tag-mode-fun)
 	   (mode-name ',(intern (format
-				 "poly-asciid-c-%s-code-inndermode"
+				 "poly-asciidoc-%s-code-inndermode"
 				 tag))))
        `(progn
 	  (defun ,head-matcher (count)
