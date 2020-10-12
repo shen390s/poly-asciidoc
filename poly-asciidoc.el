@@ -227,6 +227,7 @@
   :hostmode 'poly-asciidoc-hostmode
   :innermodes '(poly-asciidoc-source-code-innermode
 		poly-asciidoc-ditaa-code-innermode
+		poly-asciidoc-plantuml-code-innermode
                 ;;
 		))
 
