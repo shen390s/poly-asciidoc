@@ -220,10 +220,11 @@
   :mode-matcher 'poly-asciidoc-source-mode-matcher)
 
 (defun poly-asciidoc-tag-head-matcher (tag count)
-  (when (re-search-forward (format tag-pattern tag) 
-		           nil t count)
-    (cons (match-beginning 0)
-	  (match-end 0))))
+  (let ((pattern (format tag-pattern tag)))
+    (message "%s" pattern)
+    (when (re-search-forward pattern nil t count)
+      (cons (match-beginning 0)
+	    (match-end 0)))))
 
 (poly-asciidoc-mk-innermodes! asciidoc-innermodes)
 
