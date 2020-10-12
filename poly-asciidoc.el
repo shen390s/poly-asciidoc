@@ -49,6 +49,26 @@
 	svgbob syntrax umlet vega vega vegalite wavedrom)
   "tags which need asciidoctor-diagram")
 
+(defun poly-asciidoc-mkfun (tag type)
+  (intern (format "poly-asciidoc-%s-%s-matcher"
+		  tag type)))
+
+(defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
+  `(progn
+     (defun ,(poly-asciidoc-mkfun tag "head") (count)
+       (poly-asciidoc-tag-head-matcher tag count))
+     (defun ,(poly-asciidoc-mkfun tag "tail") (count)
+       (poly-asciidoc-source-tail-matcher count))
+     (defun ,(poly-asciidoc-mkfun tag "mode") ()
+       (,tag-mode-fun))
+     (define-auto-innermode ,(intern (format
+				      "poly-asciidoc-%s-code-innermode"
+				      tag))
+       poly-asciidoc-root-innermode
+       :head-matcher ',(poly-asciidoc-mkfun tag "head")
+       :tail-matcher ',(poly-asciidoc-mkfun tag "tail")
+       :mode-matcher ',(poly-asciidoc-mkfun tag "mode"))))
+
 (defun poly-asciidoc-compilation-mode-hook ()
   "Hook function to set local value for `compilation-error-screen-columns'."
   ;; In Emacs > 20.7 compilation-error-screen-columns is buffer local.
@@ -194,17 +214,21 @@
     (cons (match-beginning 0)
 	  (match-end 0))))
 
-(defun poly-asciidoc-ditaa-head-matcher (count)
-  (poly-asciidoc-tag-head-matcher "ditaa" count))
+;; (defun poly-asciidoc-ditaa-head-matcher (count)
+;;   (poly-asciidoc-tag-head-matcher "ditaa" count))
 
-(defun poly-asciidoc-ditaa-mode-matcher ()
-  "artist-mode")
+;; (defun poly-asciidoc-ditaa-mode-matcher ()
+;;   "artist-mode")
 
-(define-auto-innermode poly-asciidoc-ditaa-code-innermode
-  poly-asciidoc-root-innermode
-  :head-matcher 'poly-asciidoc-ditaa-head-matcher
-  :tail-matcher 'poly-asciidoc-source-tail-matcher
-  :mode-matcher 'poly-asciidoc-ditaa-mode-matcher)
+;; (define-auto-innermode poly-asciidoc-ditaa-code-innermode
+;;   poly-asciidoc-root-innermode
+;;   :head-matcher 'poly-asciidoc-ditaa-head-matcher
+;;   :tail-matcher 'poly-asciidoc-source-tail-matcher
+;;   :mode-matcher 'poly-asciidoc-ditaa-mode-matcher)
+
+(poly-asciidoc-innermode! "ditaa"
+			  #'(lambda ()
+			      "artist-mode"))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
