@@ -52,7 +52,7 @@
 
 (defconst asciidoc-innermodes
   '(("ditaa" . (lambda () "artist-mode"))
-    ("plantuml" . (lambda () "plantuml-mode")))
+    ("plantuml" . (lambda () "plantuml-mode"))))
 
 (defun poly-asciidoc-mkfun (tag fn type)
   (intern (format "poly-asciidoc-%s-%s-%s"
