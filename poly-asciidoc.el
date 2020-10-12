@@ -52,6 +52,7 @@
 
 (defun mkfun-return-value (value)
   #'(lambda ()
+      (message "%s" value)
       value))
 
 (defconst asciidoc-innermodes
@@ -228,14 +229,6 @@
 		           nil t count)
     (cons (match-beginning 0)
 	  (match-end 0))))
-
-;; (poly-asciidoc-innermode! "ditaa"
-;; 			  #'(lambda ()
-;; 			      "artist-mode"))
-;; (poly-asciidoc-innermode! "plantuml"
-;; 			  #'(lambda ()
-;; 			      (message "plantuml mode")
-;; 			      "plantuml-mode"))
 
 (poly-asciidoc-mk-innermodes! asciidoc-innermodes)
 
