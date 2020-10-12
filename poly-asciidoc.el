@@ -4,7 +4,8 @@
 ;; Maintainer: Rongsong Shen
 ;; Copyright (C) 2020
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "25") (polymode "0.2.2") (adoc-mode "0.6.6"))
+;; Package-Requires: ((emacs "25") (polymode "0.2.2") (adoc-mode
+;;"0.6.6") ("plantuml-mode" ))
 ;; URL: https://github.com/shen390s/poly-asciidoc
 ;; Keywords: emacs
 ;;
@@ -213,21 +214,12 @@
     (cons (match-beginning 0)
 	  (match-end 0))))
 
-;; (defun poly-asciidoc-ditaa-head-matcher (count)
-;;   (poly-asciidoc-tag-head-matcher "ditaa" count))
-
-;; (defun poly-asciidoc-ditaa-mode-matcher ()
-;;   "artist-mode")
-
-;; (define-auto-innermode poly-asciidoc-ditaa-code-innermode
-;;   poly-asciidoc-root-innermode
-;;   :head-matcher 'poly-asciidoc-ditaa-head-matcher
-;;   :tail-matcher 'poly-asciidoc-source-tail-matcher
-;;   :mode-matcher 'poly-asciidoc-ditaa-mode-matcher)
-
 (poly-asciidoc-innermode! "ditaa"
 			  #'(lambda ()
 			      "artist-mode"))
+(poly-asciidoc-innermode! "plantuml"
+			  #'(lambda ()
+			      "plantuml-mode"))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
