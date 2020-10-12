@@ -49,31 +49,28 @@
 	svgbob syntrax umlet vega vega vegalite wavedrom)
   "tags which need asciidoctor-diagram")
 
-(defun poly-asciidoc-mkfun (tag type)
-  (intern (format "poly-asciidoc-%s-%s-matcher"
-		  tag type)))
+(defun poly-asciidoc-mkfun (tag fn type)
+  (intern (format "poly-asciidoc-%s-%s-%s"
+		  tag fn type)))
 
 (defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
-  `(progn
-     (let ((head-matcher ',(poly-asciidoc-mkfun tag "head"))
-	   (tail-matcher ',(poly-asciidoc-mkfun tag "tail"))
-	   (mode-matcher ',(poly-asciidoc-mkfun tag "mode"))
-	   (mode-fun ',tag-mode-fun)
-	   (mode-name ',(intern (format
-				 "poly-asciidoc-%s-code-innermode"
-				 tag))))
-       `(progn
-	  (defun ,head-matcher (count)
-	    (poly-asciidoc-tag-head-matcher tag count))
-	  (defun ,tail-matcher (count)
-	    (poly-asciidoc-source-tail-matcher count))
-	  (defun ,mode-matcher ()
-	    (,mode-fun))
-	  (define-auto-innermode ,mode-name
-	    poly-asciidoc-root-innermode
-	    :head-matcher ',head-matcher
-	    :tail-matcher ',tail-matcher
-	    :mode-matcher ',mode-matcher)))))
+  `(let ((head-matcher ',(poly-asciidoc-mkfun tag "head" "matcher"))
+	 (tail-matcher ',(poly-asciidoc-mkfun tag "tail" "matcher"))
+	 (mode-matcher ',(poly-asciidoc-mkfun tag "mode" "matcher"))
+	 (mode-fun ',tag-mode-fun)
+	 (mode-name ',(poly-asciidoc-mkfun tag "code" "innermode")))
+     `(progn
+	 (defun ,head-matcher (count)
+	   (poly-asciidoc-tag-head-matcher tag count))
+	 (defun ,tail-matcher (count)
+	   (poly-asciidoc-source-tail-matcher count))
+	 (defun ,mode-matcher ()
+	   (,mode-fun))
+	 (define-auto-innermode ,mode-name
+	   poly-asciidoc-root-innermode
+	   :head-matcher ',head-matcher
+	   :tail-matcher ',tail-matcher
+	   :mode-matcher ',mode-matcher))))
 
 (defun poly-asciidoc-compilation-mode-hook ()
   "Hook function to set local value for `compilation-error-screen-columns'."
