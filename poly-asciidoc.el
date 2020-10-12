@@ -60,7 +60,7 @@
      (defun ,(poly-asciidoc-mkfun tag "tail" "matcher") (count)
        (poly-asciidoc-source-tail-matcher count))
      (defun ,(poly-asciidoc-mkfun tag "mode" "matcher") ()
-       (,tag-mode-fun))
+       (funcall ,tag-mode-fun))
      (define-auto-innermode
        ,(poly-asciidoc-mkfun tag "code" "innermode")
        poly-asciidoc-root-innermode
@@ -226,7 +226,7 @@
 ;;   :mode-matcher 'poly-asciidoc-ditaa-mode-matcher)
 
 (poly-asciidoc-innermode! "ditaa"
-			  '(lambda ()
+			  #'(lambda ()
 			      "artist-mode"))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
