@@ -55,19 +55,25 @@
 
 (defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
   `(progn
-     (defun ,(poly-asciidoc-mkfun tag "head") (count)
-       (poly-asciidoc-tag-head-matcher tag count))
-     (defun ,(poly-asciidoc-mkfun tag "tail") (count)
-       (poly-asciidoc-source-tail-matcher count))
-     (defun ,(poly-asciidoc-mkfun tag "mode") ()
-       (,tag-mode-fun))
-     (define-auto-innermode ,(intern (format
-				      "poly-asciidoc-%s-code-innermode"
-				      tag))
-       poly-asciidoc-root-innermode
-       :head-matcher ,(poly-asciidoc-mkfun tag "head")
-       :tail-matcher ,(poly-asciidoc-mkfun tag "tail")
-       :mode-matcher ,(poly-asciidoc-mkfun tag "mode"))))
+     (let ((head-matcher ',(poly-asciidoc-mkfun tag "head"))
+	   (tail-matcher ',(poly-asciidoc-mkfun tag "tail"))
+	   (mode-matcher ',(poly-asciidoc-mkfun tag "mode"))
+	   (mode-fun ',tag-mode-fun)
+	   (mode-name ',(intern (format
+				 "poly-asciid-c-%s-code-inndermode"
+				 tag))))
+       `(progn
+	  (defun ,head-matcher (count)
+	    (poly-asciidoc-tag-head-matcher tag count))
+	  (defun ,tail-matcher (count)
+	    (poly-asciidoc-source-tail-matcher count))
+	  (defun ,mode-matcher ()
+	    (,mode-fun))
+	  (define-auto-innermode ,mode-name
+	    poly-asciidoc-root-innermode
+	    :head-matcher ',head-matcher
+	    :tail-matcher ',tail-matcher
+	    :mode-matcher ',mode-matcher)))))
 
 (defun poly-asciidoc-compilation-mode-hook ()
   "Hook function to set local value for `compilation-error-screen-columns'."
