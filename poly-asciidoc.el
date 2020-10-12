@@ -54,24 +54,19 @@
 		  tag fn type)))
 
 (defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
-  `(let ((head-matcher ',(poly-asciidoc-mkfun tag "head" "matcher"))
-	 (tail-matcher ',(poly-asciidoc-mkfun tag "tail" "matcher"))
-	 (mode-matcher ',(poly-asciidoc-mkfun tag "mode" "matcher"))
-	 (mode-fun ',tag-mode-fun)
-	 (tag-name ,tag)
-	 (mode-name ',(poly-asciidoc-mkfun tag "code" "innermode")))
-     `(progn
-	 (defun ,head-matcher (count)
-	   (poly-asciidoc-tag-head-matcher ,tag-name count))
-	 (defun ,tail-matcher (count)
-	   (poly-asciidoc-source-tail-matcher count))
-	 (defun ,mode-matcher ()
-	   (,mode-fun))
-	 (define-auto-innermode ,mode-name
-	   poly-asciidoc-root-innermode
-	   :head-matcher ',head-matcher
-	   :tail-matcher ',tail-matcher
-	   :mode-matcher ',mode-matcher))))
+  `(progn
+     (defun ,(poly-asciidoc-mkfun tag "head" "matcher") (count)
+       (poly-asciidoc-tag-head-matcher ,tag  count))
+     (defun ,(poly-asciidoc-mkfun tag "tail" "matcher") (count)
+       (poly-asciidoc-source-tail-matcher count))
+     (defun ,(poly-asciidoc-mkfun tag "mode" "matcher") ()
+       (,tag-mode-fun))
+     (define-auto-innermode
+       ,(poly-asciidoc-mkfun tag "code" "innermode")
+       poly-asciidoc-root-innermode
+       :head-matcher ',(poly-asciidoc-mkfun tag "head" "matcher")
+       :tail-matcher ',(poly-asciidoc-mkfun tag "tail" "matcher")
+       :mode-matcher ',(poly-asciidoc-mkfun tag "mode" "matcher"))))
 
 (defun poly-asciidoc-compilation-mode-hook ()
   "Hook function to set local value for `compilation-error-screen-columns'."
