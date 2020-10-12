@@ -226,7 +226,7 @@
 ;;   :mode-matcher 'poly-asciidoc-ditaa-mode-matcher)
 
 (poly-asciidoc-innermode! "ditaa"
-			  #'(lambda ()
+			  '(lambda ()
 			      "artist-mode"))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
