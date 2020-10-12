@@ -40,7 +40,7 @@
 (require 'adoc-mode)
 
 (defconst tag-pattern
-  "^\\[[a-zA-Z0-9]*\\([ \t]*,.*\\)*\\]\n-\\{4,\\}[ \t]*$"
+  "^\\[%s\\([ \t]*,.*\\)*\\]\n-\\{4,\\}[ \t]*$"
   "patten template for tag")
 
 (defconst asciidoc-diagram-tags
