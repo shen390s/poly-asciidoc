@@ -169,6 +169,7 @@
 
 (define-obsolete-variable-alias 'pm-host/asciidoc 'poly-asciidoc-hostmode "v0.0.1")
 (define-obsolete-variable-alias 'pm-inner/asciidoc-source-code 'poly-asciidoc-source-code-innermode "v0.0.1")
+(define-obsolete-variable-alias 'pm-inner/asciidoc-ditaa-code 'poly-asciidoc-ditaa-code-innermode "0.0.1")
 (define-obsolete-variable-alias 'pm-poly/asciidoc 'poly-asciidoc-polymode "v0.0.1")
 
 (define-hostmode poly-asciidoc-hostmode
