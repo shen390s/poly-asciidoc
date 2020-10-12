@@ -50,14 +50,9 @@
 	svgbob syntrax umlet vega vega vegalite wavedrom)
   "tags which need asciidoctor-diagram")
 
-(defun mkfun-return-value (value)
-  #'(lambda ()
-      (message "%s" value)
-      value))
-
 (defconst asciidoc-innermodes
-  '(("ditaa" . mkfun-return-value("artist-mode"))
-    ("plantuml" . mkfun-return-value("plantuml-mode"))))
+  '(("ditaa" . (lambda () "artist-mode"))
+    ("plantuml" . (lambda () "plantuml-mode")))
 
 (defun poly-asciidoc-mkfun (tag fn type)
   (intern (format "poly-asciidoc-%s-%s-%s"
