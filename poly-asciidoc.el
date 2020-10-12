@@ -65,9 +65,9 @@
 				      "poly-asciidoc-%s-code-innermode"
 				      tag))
        poly-asciidoc-root-innermode
-       :head-matcher ',(poly-asciidoc-mkfun tag "head")
-       :tail-matcher ',(poly-asciidoc-mkfun tag "tail")
-       :mode-matcher ',(poly-asciidoc-mkfun tag "mode"))))
+       :head-matcher ,(poly-asciidoc-mkfun tag "head")
+       :tail-matcher ,(poly-asciidoc-mkfun tag "tail")
+       :mode-matcher ,(poly-asciidoc-mkfun tag "mode"))))
 
 (defun poly-asciidoc-compilation-mode-hook ()
   "Hook function to set local value for `compilation-error-screen-columns'."
