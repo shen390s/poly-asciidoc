@@ -219,6 +219,7 @@
 			      "artist-mode"))
 (poly-asciidoc-innermode! "plantuml"
 			  #'(lambda ()
+			      (message "plantuml mode")
 			      "plantuml-mode"))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
