@@ -58,10 +58,11 @@
 	 (tail-matcher ',(poly-asciidoc-mkfun tag "tail" "matcher"))
 	 (mode-matcher ',(poly-asciidoc-mkfun tag "mode" "matcher"))
 	 (mode-fun ',tag-mode-fun)
+	 (tag-name ,tag)
 	 (mode-name ',(poly-asciidoc-mkfun tag "code" "innermode")))
      `(progn
 	 (defun ,head-matcher (count)
-	   (poly-asciidoc-tag-head-matcher tag count))
+	   (poly-asciidoc-tag-head-matcher ,tag-name count))
 	 (defun ,tail-matcher (count)
 	   (poly-asciidoc-source-tail-matcher count))
 	 (defun ,mode-matcher ()
