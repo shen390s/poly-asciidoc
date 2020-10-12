@@ -73,7 +73,7 @@
        :tail-matcher ',(poly-asciidoc-mkfun tag "tail" "matcher")
        :mode-matcher ',(poly-asciidoc-mkfun tag "mode" "matcher"))))
 
-(defmacro poly-assciidoc-mk-innermodes! (lst)
+(defmacro poly-asciidoc-mk-innermodes! (lst)
   `(progn
      ,@(cl-loop for innermode in lst
 		collect (poly-asciidoc-innermode
