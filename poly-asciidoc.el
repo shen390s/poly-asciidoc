@@ -248,6 +248,7 @@
 		poly-asciidoc-graphviz-code-innermode
 		poly-asciidoc-nwdiag-code-innermode
 		poly-asciidoc-seqdiag-code-innermode
+		poly-asciidoc-mermaid-code-innermode
                 ;;
 		))
 
