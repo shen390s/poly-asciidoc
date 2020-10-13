@@ -231,6 +231,7 @@
  (("ditaa" . (lambda () "artist-mode"))
   ("plantuml" . (lambda () "plantuml-mode"))
   ("mermaid" . (lambda () "mermaid-mode"))
+  ("gnuplot" . (lambda () "gnuplot-mode"))
   ("actdiag" . 'poly-asciidoc/graphviz-mode-matcher)
   ("blockdiag" . 'poly-asciidoc/graphviz-mode-matcher)
   ("graphviz" . 'poly-asciidoc/graphviz-mode-matcher)
@@ -249,6 +250,7 @@
 		poly-asciidoc-nwdiag-code-innermode
 		poly-asciidoc-seqdiag-code-innermode
 		poly-asciidoc-mermaid-code-innermode
+		poly-asciidoc-gnuplot-code-innermode
                 ;;
 		))
 
