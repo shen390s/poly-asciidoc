@@ -228,11 +228,11 @@
 (poly-asciidoc-mk-innermodes! 
  (("ditaa" . (lambda () "artist-mode"))
   ("plantuml" . (lambda () "plantuml-mode"))
-  ("actdiag" . #'poly-asciidoc-graphviz-mode-matcher)
-  ("blockdiag" . #'poly-asciidoc-graphviz-mode-matcher)
-  ("graphviz" . #'poly-asciidoc-graphviz-mode-matcher)
-  ("nwdiag" . #'poly-asciidoc-graphviz-mode-matcher)
-  ("seqdiag" . #'poly-asciidoc-graphviz-mode-matcher)))
+  ("actdiag" . 'poly-asciidoc-graphviz-mode-matcher)
+  ("blockdiag" . 'poly-asciidoc-graphviz-mode-matcher)
+  ("graphviz" . 'poly-asciidoc-graphviz-mode-matcher)
+  ("nwdiag" . 'poly-asciidoc-graphviz-mode-matcher)
+  ("seqdiag" . 'poly-asciidoc-graphviz-mode-matcher)))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
