@@ -240,6 +240,11 @@
   :innermodes '(poly-asciidoc-source-code-innermode
 		poly-asciidoc-ditaa-code-innermode
 		poly-asciidoc-plantuml-code-innermode
+		poly-asciidoc-actdiag-code-innermode
+		poly-asciidoc-blockdiag-code-innermode
+		poly-asciidoc-graphviz-code-innermode
+		poly-asciidoc-nwdiag-code-innermode
+		poly-asciidoc-seqdiag-code-innermode
                 ;;
 		))
 
