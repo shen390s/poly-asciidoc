@@ -50,10 +50,6 @@
 	svgbob syntrax umlet vega vega vegalite wavedrom)
   "tags which need asciidoctor-diagram")
 
-(defconst asciidoc-innermodes
-  '(("ditaa" . (lambda () "artist-mode"))
-    ("plantuml" . (lambda () "plantuml-mode"))))
-
 (defun poly-asciidoc-mkfun (tag fn type)
   (intern (format "poly-asciidoc-%s-%s-%s"
 		  tag fn type)))
@@ -73,12 +69,12 @@
        :tail-matcher ',(poly-asciidoc-mkfun tag "tail" "matcher")
        :mode-matcher ',(poly-asciidoc-mkfun tag "mode" "matcher"))))
 
-(defmacro poly-asciidoc-mk-innermodes! (lst)
+(defmacro poly-asciidoc-mk-innermodes! (modes)
   `(progn
-     ,@(cl-loop for innermode in lst
-		collect (poly-asciidoc-innermode
-			 (car innermode)
-			 (cdr innermode)))))
+     ,@(cl-loop for mode in modes
+		collect `(poly-asciidoc-innermode!
+			  ,(car mode)
+			  ,(cdr mode)))))
 
 (defun poly-asciidoc-compilation-mode-hook ()
   "Hook function to set local value for `compilation-error-screen-columns'."
@@ -227,12 +223,9 @@
       (cons (match-beginning 0)
 	    (match-end 0)))))
 
-;;(poly-asciidoc-mk-innermodes! asciidoc-innermodes)
-
-(poly-asciidoc-innermode! "ditaa"
-			  (lambda () "artist-mode"))
-(poly-asciidoc-innermode! "plantuml"
-			  (lambda () "plantuml-mode"))
+(poly-asciidoc-mk-innermodes! 
+ (("ditaa" . (lambda () "artist-mode"))
+  ("plantuml" . (lambda () "plantuml-mode"))))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
