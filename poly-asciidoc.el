@@ -230,6 +230,7 @@
 (poly-asciidoc-mk-innermodes! 
  (("ditaa" . (lambda () "artist-mode"))
   ("plantuml" . (lambda () "plantuml-mode"))
+  ("mermaid" . (lambda () "mermaid-mode"))
   ("actdiag" . 'poly-asciidoc/graphviz-mode-matcher)
   ("blockdiag" . 'poly-asciidoc/graphviz-mode-matcher)
   ("graphviz" . 'poly-asciidoc/graphviz-mode-matcher)
