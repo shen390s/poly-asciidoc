@@ -218,14 +218,21 @@
 
 (defun poly-asciidoc-tag-head-matcher (tag count)
   (let ((pattern (format tag-pattern tag)))
-    (message "%s" pattern)
     (when (re-search-forward pattern nil t count)
       (cons (match-beginning 0)
 	    (match-end 0)))))
 
+(defun poly-asciidoc-graphviz-mode-matcher ()
+  "graphviz-mode")
+
 (poly-asciidoc-mk-innermodes! 
  (("ditaa" . (lambda () "artist-mode"))
-  ("plantuml" . (lambda () "plantuml-mode"))))
+  ("plantuml" . (lambda () "plantuml-mode"))
+  ("actdiag" . poly-asciidoc-graphviz-mode-matcher)
+  ("blockdiag" . poly-asciidoc-graphviz-mode-matcher)
+  ("graphviz" . poly-asciidoc-graphviz-mode-matcher)
+  ("nwdiag" . poly-asciidoc-graphviz-mode-matcher)
+  ("seqdiag" . poly-asciidoc-graphviz-mode-matcher)))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
