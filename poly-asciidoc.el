@@ -51,7 +51,7 @@
   "tags which need asciidoctor-diagram")
 
 (defun poly-asciidoc-mkfun (tag fn type)
-  (intern (format "poly-asciidoc/:%s-%s-%s"
+  (intern (format "poly-asciidoc-%s-%s-%s"
 		  tag fn type)))
 
 (defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
@@ -222,17 +222,19 @@
       (cons (match-beginning 0)
 	    (match-end 0)))))
 
-(defun poly-asciidoc-graphviz-mode-matcher ()
+;; NOTICE:
+;; avoid duplicated name 
+(defun poly-asciidoc/graphviz-mode-matcher ()
   "graphviz-mode")
 
 (poly-asciidoc-mk-innermodes! 
  (("ditaa" . (lambda () "artist-mode"))
   ("plantuml" . (lambda () "plantuml-mode"))
-  ("actdiag" . 'poly-asciidoc-graphviz-mode-matcher)
-  ("blockdiag" . 'poly-asciidoc-graphviz-mode-matcher)
-  ("graphviz" . 'poly-asciidoc-graphviz-mode-matcher)
-  ("nwdiag" . 'poly-asciidoc-graphviz-mode-matcher)
-  ("seqdiag" . 'poly-asciidoc-graphviz-mode-matcher)))
+  ("actdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+  ("blockdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+  ("graphviz" . 'poly-asciidoc/graphviz-mode-matcher)
+  ("nwdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+  ("seqdiag" . 'poly-asciidoc/graphviz-mode-matcher)))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
