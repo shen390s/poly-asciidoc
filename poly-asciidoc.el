@@ -75,7 +75,7 @@
        ("rackdiag"  . 'poly-asciidoc/graphviz-mode-matcher)
        ("shaape"  . 'poly-asciidoc/unsupport-mode-matcher)
        ("smcat"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("svgbob"  . 'poly-asciidoc/unsupport-mode-matcher)
+       ("svgbob"  . (lambda () "artist-mode"))
        ("syntrax"  . 'poly-asciidoc/unsupport-mode-matcher)
        ("umlet"  . 'poly-asciidoc/unsupport-mode-matcher)
        ("vega"  . 'poly-asciidoc/unsupport-mode-matcher)
