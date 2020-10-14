@@ -94,6 +94,7 @@
 
 (defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
   `(progn
+     (message "build inner mode for %s" ,tag)
      (defun ,(poly-asciidoc-mkfun tag "head" "matcher") (count)
        (poly-asciidoc-tag-head-matcher ,tag  count))
      (defun ,(poly-asciidoc-mkfun tag "tail" "matcher") (count)
