@@ -270,7 +270,7 @@
   :tail-matcher 'poly-asciidoc:source-tail-matcher
   :mode-matcher 'poly-asciidoc:source-mode-matcher)
 
-(defun poly-asciidoc:tag-head-matcher (tag count)
+(defun poly-asciidoc-tag-head-matcher (tag count)
   (let ((pattern (format tag-pattern tag)))
     (when (re-search-forward pattern nil t count)
       (cons (match-beginning 0)
