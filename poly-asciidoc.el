@@ -97,7 +97,7 @@
      (defun ,(poly-asciidoc-mkfun tag "head" "matcher") (count)
        (poly-asciidoc-tag-head-matcher ,tag  count))
      (defun ,(poly-asciidoc-mkfun tag "tail" "matcher") (count)
-       (poly-asciidoc-source-tail-matcher count))
+       (poly-asciidoc:source-tail-matcher count))
      (defun ,(poly-asciidoc-mkfun tag "mode" "matcher") ()
        (funcall ,tag-mode-fun))
      (define-auto-innermode
