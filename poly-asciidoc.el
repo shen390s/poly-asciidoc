@@ -43,6 +43,23 @@
   "^\\[%s\\([ \t]*,.*\\)*\\]\n-\\{4,\\}[ \t]*$"
   "patten template for tag")
 
+;; NOTICE:
+;; avoid duplicated name 
+(defun poly-asciidoc/graphviz-mode-matcher ()
+  "graphviz-mode")
+
+(eval-and-compile
+  (defconst innermodes
+    '(("ditaa" . (lambda () "artist-mode"))
+      ("plantuml" . (lambda () "plantuml-mode"))
+      ("mermaid" . (lambda () "mermaid-mode"))
+      ("gnuplot" . (lambda () "gnuplot-mode"))
+      ("actdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+      ("blockdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+      ("graphviz" . 'poly-asciidoc/graphviz-mode-matcher)
+      ("nwdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+      ("seqdiag" . 'poly-asciidoc/graphviz-mode-matcher))))
+
 (defconst asciidoc-diagram-tags
   '(a2s actdiag blockdiag bpmn bytefield ditaa dpic erd
 	gnuplot graphviz meme mermaid msc nomnoml nwdiag
@@ -222,21 +239,8 @@
       (cons (match-beginning 0)
 	    (match-end 0)))))
 
-;; NOTICE:
-;; avoid duplicated name 
-(defun poly-asciidoc/graphviz-mode-matcher ()
-  "graphviz-mode")
-
-(poly-asciidoc-mk-innermodes! 
- (("ditaa" . (lambda () "artist-mode"))
-  ("plantuml" . (lambda () "plantuml-mode"))
-  ("mermaid" . (lambda () "mermaid-mode"))
-  ("gnuplot" . (lambda () "gnuplot-mode"))
-  ("actdiag" . 'poly-asciidoc/graphviz-mode-matcher)
-  ("blockdiag" . 'poly-asciidoc/graphviz-mode-matcher)
-  ("graphviz" . 'poly-asciidoc/graphviz-mode-matcher)
-  ("nwdiag" . 'poly-asciidoc/graphviz-mode-matcher)
-  ("seqdiag" . 'poly-asciidoc/graphviz-mode-matcher)))
+(eval-and-compile
+  `(poly-asciidoc-mk-innermodes! ,innermodes))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
