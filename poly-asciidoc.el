@@ -89,7 +89,7 @@
   "tags which need asciidoctor-diagram")
 
 (defun poly-asciidoc-mkfun (tag fn type)
-  (intern (format "poly-asciidoc-%s-%s-%s"
+  (intern (format "poly-asciidoc:%s-%s-%s"
 		  tag fn type)))
 
 (defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
@@ -176,11 +176,15 @@
 (defun poly-asciidoc-compile ()
   (interactive)
   (let ((cmd (format "%s %s %s"
-		     (poly-asciidoc-compiler (symbol-name poly-asciidoc-output-format))
-		     (poly-asciidoc-compile-options (symbol-name poly-asciidoc-output-format))
+		     (poly-asciidoc-compiler
+		      (symbol-name poly-asciidoc-output-format))
+		     (poly-asciidoc-compile-options
+		      (symbol-name poly-asciidoc-output-format))
                      (buffer-file-name)))
         (buf-name "*poly-asciidoc compilation")
-        (compilation-mode-hook (cons 'poly-asciidoc-compilation-mode-hook compilation-mode-hook)))
+        (compilation-mode-hook (cons
+				'poly-asciidoc-compilation-mode-hook
+				compilation-mode-hook)))
     (if (fboundp 'compilation-start)
         (compilation-start cmd nil
                            #'(lambda (mode-name)
@@ -191,8 +195,10 @@
 (defun poly-asciidoc-view ()
   (interactive)
   (let ((dst-file-name (format "%s.%s"
-			       (file-name-sans-extension (buffer-file-name))
-                               (symbol-name poly-asciidoc-output-format))))
+			       (file-name-sans-extension
+				(buffer-file-name))
+                               (symbol-name
+				poly-asciidoc-output-format))))
     (if (file-exists-p dst-file-name)
         (find-file-other-window dst-file-name)
       (error "Please compile the it first!\n"))))
@@ -207,10 +213,14 @@
 
 ;; Declarations
 
-(define-obsolete-variable-alias 'pm-host/asciidoc 'poly-asciidoc-hostmode "v0.0.1")
-(define-obsolete-variable-alias 'pm-inner/asciidoc-source-code 'poly-asciidoc-source-code-innermode "v0.0.1")
-(define-obsolete-variable-alias 'pm-inner/asciidoc-ditaa-code 'poly-asciidoc-ditaa-code-innermode "0.0.1")
-(define-obsolete-variable-alias 'pm-poly/asciidoc 'poly-asciidoc-polymode "v0.0.1")
+(define-obsolete-variable-alias 'pm-host/asciidoc
+  'poly-asciidoc-hostmode "v0.0.1")
+(define-obsolete-variable-alias 'pm-inner/asciidoc-source-code
+  'poly-asciidoc-source-code-innermode "v0.0.1")
+(define-obsolete-variable-alias 'pm-inner/asciidoc-ditaa-code
+  'poly-asciidoc-ditaa-code-innermode "0.0.1")
+(define-obsolete-variable-alias 'pm-poly/asciidoc
+  'poly-asciidoc-polymode "v0.0.1")
 
 (define-hostmode poly-asciidoc-hostmode
   :mode 'adoc-mode
@@ -225,14 +235,14 @@
 (defun poly-asciidoc-remove-asciidoc-hooks (host)
   t)
 
-(defun poly-asciidoc-source-head-matcher (count)
+(defun poly-asciidoc:source-head-matcher (count)
   (when (re-search-forward
 	 "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\][ \t]*\n----[-]*[ \t]*\\)$" nil t
 	 count)
     (cons (match-beginning 0)
 	  (match-end 0))))
 
-(defun poly-asciidoc-source-tail-matcher (count)
+(defun poly-asciidoc:source-tail-matcher (count)
   (when (re-search-forward "^-\\{4,\\}[ \t]*$" nil t)
     (cons (match-beginning 0)
 	  (match-end 0))))
@@ -247,20 +257,20 @@
 	    s-mode
 	  "text-mode")))))
 
-(defun poly-asciidoc-source-mode-matcher ()
+(defun poly-asciidoc:source-mode-matcher ()
   (when (re-search-forward
 	 "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n*$"
 	 (point-at-eol) t)
     (let ((lang (match-string-no-properties 1)))
       (poly-asciidoc-get-lang-mode lang))))
 
-(define-auto-innermode poly-asciidoc-source-code-innermode
+(define-auto-innermode poly-asciidoc:source-code-innermode
   poly-asciidoc-root-innermode
-  :head-matcher 'poly-asciidoc-source-head-matcher
-  :tail-matcher 'poly-asciidoc-source-tail-matcher
-  :mode-matcher 'poly-asciidoc-source-mode-matcher)
+  :head-matcher 'poly-asciidoc:source-head-matcher
+  :tail-matcher 'poly-asciidoc:source-tail-matcher
+  :mode-matcher 'poly-asciidoc:source-mode-matcher)
 
-(defun poly-asciidoc-tag-head-matcher (tag count)
+(defun poly-asciidoc:tag-head-matcher (tag count)
   (let ((pattern (format tag-pattern tag)))
     (when (re-search-forward pattern nil t count)
       (cons (match-beginning 0)
@@ -272,7 +282,7 @@
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
   :hostmode 'poly-asciidoc-hostmode
-  :innermodes (cons 'poly-asciidoc-source-code-innermode
+  :innermodes (cons 'poly-asciidoc:source-code-innermode
 		    poly-asciidoc-code-innermodes
                 ;;
 		))
