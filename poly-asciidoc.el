@@ -117,7 +117,7 @@
 
 (defvar poly-asciidoc-code-innermodes
   (cl-loop for mode in (funcall (gen-innermode-defs-fun))
-	   collect (poly-asciidoc-mkfun (car mode) "code" "matcher"))
+	   collect (poly-asciidoc-mkfun (car mode) "code" "innermode"))
   "Generate list of -code-innermode")
 
 (defun poly-asciidoc-compilation-mode-hook ()
