@@ -90,7 +90,7 @@
 
 (defun poly-asciidoc-mkfun (tag fn type)
   (intern (format "poly-asciidoc-%s-%s-%s"
-		  tag fn type))))
+		  tag fn type)))
 
 (defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
   `(progn
