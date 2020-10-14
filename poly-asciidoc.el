@@ -94,7 +94,6 @@
 
 (defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
   `(progn
-     (message "build inner mode for %s" ,tag)
      (defun ,(poly-asciidoc-mkfun tag "head" "matcher") (count)
        (poly-asciidoc-tag-head-matcher ,tag  count))
      (defun ,(poly-asciidoc-mkfun tag "tail" "matcher") (count)
@@ -262,7 +261,8 @@
       (cons (match-beginning 0)
 	    (match-end 0)))))
 
-(poly-asciidoc-mk-innermodes! gen-innermode-defs-fun)
+(eval 
+ (poly-asciidoc-mk-innermodes! gen-innermode-defs-fun))
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
