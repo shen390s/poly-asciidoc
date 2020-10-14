@@ -1,0 +1,206 @@
+= This is just for test
+
+== Section one
+
+[source, shell]
+----
+# echo "Hello,world" |sed -e '1,$s/H/G/g'
+----
+
+[source, shell]
+----
+# echo "Hello,world" |sed -e '1,$s/H/G/g'
+----
+
+
+[ditaa]
+----
+                                         push
+         +------------------+--------------------------------------+
+         |                  |                                      |
+         |                  v                                      |
+         |        +---------+----------+                  +--------+-------+
+         |        |                    | fetch/pull/clone |                |  client request
+         |  +-----|     Git Repo       +----------------->+   Web Server   |<---------------
+         |  |     |     cRED {s}       |                  |     cGRE {o}   |
+         |  |     +--------------------+                  +---+----+-------+
+         |  |               | publish(post hook)              ^    ^  ^
+         |  |               |                                 |    |  |   +------------+
+         |  |               *---------------------------------+    |  |   |            |
+         |  |               |                                      |  +-->| web cache  |
+         |  |               v                                      |      |  cYEL {s}  |
+         |  |     +---------+----------+                           |      +------------+
+         |  |     |     AuthDB         |       auth                |
+         |  |     |      cRED {s}      +-------------------------->* auth (pre hook)
+         |  |     |                    |                           |
+         |  |     +--------------------+                           v
+         |  |                                             +--------+--------+
+         |  |         pull/clone/fetch                    |                 |  client request
+         |  +-------------------------------------------->+   SSH Access    |<----------------
+         |                                                |   cGRE {o}      |
+         |                                                +---------+-------+
+         |                                                          |
+         |                 push                                     |
+         +----------------------------------------------------------+
+----
+
+[actdiag]
+----
+actdiag {
+  write -> c.nvert -> image
+
+  lane user {
+     label = "User"
+     write [label = "Writing reST"];
+     image [label = "Get diagram IMAGE"];
+  }
+  lane actdiag {
+     convert [label = "Convert reST to Image"];
+  }
+}
+----
+
+[mermaid]
+----
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>John: Hello John, how are you?
+    loop Healthcheck
+        John->>John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts <br/>prevail!
+    John-->>Alice: Great!
+    John->>Bob: How about you?
+    Bob-->>John: Jolly good!
+----
+
+[gnuplot]
+----
+set multiplot                       # multiplot mode (prompt changes to 'multiplot')
+set size 1, 0.5
+
+set origin 0.0,0.5
+plot sin(x), log(x)
+
+set origin 0.0,0.0
+plot sin(x), log(x), cos(x)
+
+unset multiplot                     # exit multiplot mode (prompt changes back to 'gnuplot')
+----
+
+[mermaid]
+----
+sequenceDiagram
+    Alice ->> Bob: Hello Bob, how are you?
+    Bob-->>John: How about you John?
+    Bob--x Alice: I am good thanks!
+    Bob-x John: I am good thanks!
+    Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+    Bob-->Alice: Checking with John...
+    Alice->John: Yes... John, how are you?
+----
+
+[mermaid]
+----
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>John: Hello John, how are you?
+    loop Healthcheck
+        John->>John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts<br/>prevail...
+    John-->>Alice: Great!
+    John->>Bob: How about you?
+    Bob-->>John: Jolly good!
+----
+
+[mermaid]
+----
+classDiagram
+      Animal <|-- Duck
+      Animal <|-- Fish
+      Animal <|-- Zebra
+      Animal : +int age
+      Animal : +String gender
+      Animal: +isMammal()
+      Animal: +mate()
+      class Duck{
+          +String beakColor
+          +swim()
+          +quack()
+      }
+      class Fish{
+          -int sizeInFeet
+          -canEat()
+      }
+      class Zebra{
+          +bool is_wild
+          +run()
+      }
+----
+
+[nwdiag]
+----
+nwdiag {
+  network dmz {
+      address = "210.x.x.x/24"
+
+      web01 [address = "210.x.x.1"];
+      web02 [address = "210.x.x.2"];
+  }
+  network internal {
+      address = "172.x.x.x/24";
+
+      web01 [address = "172.x.x.1"];
+      web02 [address = "172.x.x.2"];
+      db01;
+      db02;
+  }
+}
+----
+
+[rackdiag]
+----
+rackdiag {
+  // define height of rack
+  16U;
+
+  // define rack items
+  1: UPS [2U];
+  3: DB Server
+  4: Web Server
+  5: Web Server
+  6: Web Server
+  7: Load Balancer
+  8: L3 Switch
+  }
+----
+
+[packetdiag]
+----
+{
+  colwidth = 32
+  node_height = 72
+
+  0-15: Source Port
+  16-31: Destination Port
+  32-63: Sequence Number
+  64-95: Acknowledgment Number
+  96-99: Data Offset
+  100-105: Reserved
+  106: URG [rotate = 270]
+  107: ACK [rotate = 270]
+  108: PSH [rotate = 270]
+  109: RST [rotate = 270]
+  110: SYN [rotate = 270]
+  111: FIN [rotate = 270]
+  112-127: Window
+  128-143: Checksum
+  144-159: Urgent Pointer
+  160-191: (Options and Padding)
+  192-223: data [colheight = 3]
+  }
+----
