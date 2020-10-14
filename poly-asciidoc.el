@@ -115,6 +115,11 @@
 			     ,(car mode)
 			     ,(cdr mode))))))
 
+(defvar poly-asciidoc-code-innermodes
+  (cl-loop for mode in (funcall (gen-innermode-defs-fun))
+	   collect (poly-asciidoc-mkfun (car mode) "code" "matcher"))
+  "Generate list of -code-innermode")
+
 (defun poly-asciidoc-compilation-mode-hook ()
   "Hook function to set local value for `compilation-error-screen-columns'."
   ;; In Emacs > 20.7 compilation-error-screen-columns is buffer local.
@@ -267,16 +272,8 @@
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
   :hostmode 'poly-asciidoc-hostmode
-  :innermodes '(poly-asciidoc-source-code-innermode
-		poly-asciidoc-ditaa-code-innermode
-		poly-asciidoc-plantuml-code-innermode
-		poly-asciidoc-actdiag-code-innermode
-		poly-asciidoc-blockdiag-code-innermode
-		poly-asciidoc-graphviz-code-innermode
-		poly-asciidoc-nwdiag-code-innermode
-		poly-asciidoc-seqdiag-code-innermode
-		poly-asciidoc-mermaid-code-innermode
-		poly-asciidoc-gnuplot-code-innermode
+  :innermodes (cons 'poly-asciidoc-source-code-innermode
+		    poly-asciidoc-code-innermodes
                 ;;
 		))
 
