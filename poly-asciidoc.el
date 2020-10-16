@@ -240,7 +240,7 @@
   t)
 
 (defvar poly-asciidoc:source-head-regexp
-  "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\][ \t]*\n-\\{4,\\}[ \t]*\\)$"
+  "^\\(\\[source[ \t]*,[ \t]*[^ \t]+[ \t]*\\][ \t]*\n-\\{4,\\}[ \t]*\\)$"
   "regexp to match header of source block")
 
 (defvar poly-asciidoc:source-tail-regexp
