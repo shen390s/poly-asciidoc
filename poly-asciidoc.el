@@ -67,7 +67,7 @@
     ("dpic"  . 'poly-asciidoc/unsupport-mode-matcher)
     ("erd"  . 'poly-asciidoc/unsupport-mode-matcher)
     ("meme"  . 'poly-asciidoc/unsupport-mode-matcher)
-    ("msc"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("msc"  . 'poly-asciidoc/graphviz-mode-matcher)
     ("nomnoml"  . 'poly-asciidoc/unsupport-mode-matcher)
     ("packetdiag"  . 'poly-asciidoc/graphviz-mode-matcher)
     ("pikchr"  . 'poly-asciidoc/unsupport-mode-matcher)
