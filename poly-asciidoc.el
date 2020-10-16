@@ -80,7 +80,8 @@
     ("vega"  . 'poly-asciidoc/unsupport-mode-matcher)
     ("vegalite"  . 'poly-asciidoc/unsupport-mode-matcher)
     ("wavedrom"  . 'poly-asciidoc/unsupport-mode-matcher)
-    ("a2s" . 'poly-asciidoc/unsupport-mode-matcher)))
+    ("a2s" . 'poly-asciidoc/unsupport-mode-matcher))
+  "list of inner modes which supported by asciidoctor-diagram")
 
 (defvar asciidoc-diagram-tags
   (cl-loop for mode in innermode-defs
@@ -92,6 +93,7 @@
 		  tag fn type)))
 
 (defmacro poly-asciidoc-innermode! (tag tag-mode-fun)
+  "macro used to define innermode"
   `(progn
      (defun ,(poly-asciidoc-mkfun tag "head" "matcher") (count)
        (poly-asciidoc-tag-head-matcher ,tag  count))
@@ -107,6 +109,7 @@
        :mode-matcher ',(poly-asciidoc-mkfun tag "mode" "matcher"))))
 
 (defmacro poly-asciidoc-mk-innermodes! (modes)
+  "create a list of innermodes"
   `(progn
      ,@(cl-loop for mode in modes
 		collect `(poly-asciidoc-innermode!
@@ -155,6 +158,7 @@
       (poly-asciidoc-check-tags (cdr  tags)))))
 
 (defun poly-asciidoc-check-diagram ()
+  "Check whether we need to use asciidoctor-diagram"
   (interactive)
   (poly-asciidoc-check-tags asciidoc-diagram-tags))
 
@@ -162,9 +166,11 @@
   (setq options "")
   (progn
     (when (poly-asciidoc-check-diagram)
+      ;; we also need to use asciidoctor-diagram
       (setq options (format "%s -r asciidoctor-diagram" options)))
     (cond
      ((string= output-format "epub")
+      ;; add support of epub
       (setq options (format "%s -r asciidoctor-epub3 -b epub3 "
 			    options)))
      (t t)))
@@ -233,19 +239,27 @@
 (defun poly-asciidoc-remove-asciidoc-hooks (host)
   t)
 
+(defvar poly-asciidoc:source-head-regexp
+  "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\][ \t]*\n-\\{4,\\}[ \t]*\\)$"
+  "regexp to match header of source block")
+
+(defvar poly-asciidoc:source-tail-regexp
+  "^-\\{4,\\}[ \t]*$"
+  "regexp to match tail of source(and others) block")
+
 (defun poly-asciidoc:source-head-matcher (count)
-  (when (re-search-forward
-	 "^\\(\\[source,[ \t]*[^ \t]+[ \t]*\\][ \t]*\n----[-]*[ \t]*\\)$" nil t
-	 count)
+  (when (re-search-forward poly-asciidoc:source-head-regexp
+			   nil t count)
     (cons (match-beginning 0)
 	  (match-end 0))))
 
 (defun poly-asciidoc:source-tail-matcher (count)
-  (when (re-search-forward "^-\\{4,\\}[ \t]*$" nil t)
+  (when (re-search-forward  poly-asciidoc:source-tail-regexp nil t)
     (cons (match-beginning 0)
 	  (match-end 0))))
 
 (defun poly-asciidoc-get-lang-mode (lang)
+  "Get major mode based of lang information of source block"
   (cond
    ((string= lang "shell") "shell-script-mode")
    ((string= lang "asciidoc") "adoc-mode")
@@ -255,13 +269,17 @@
 	    s-mode
 	  "text-mode")))))
 
+(defvar poly-asciidoc:source-lang-regexp
+  "^\\[source[ \t]*,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n*$"
+  "regexp to extract lang information from source block header")
+
 (defun poly-asciidoc:source-mode-matcher ()
-  (when (re-search-forward
-	 "^\\[source,[ \t]*\\([^ \t]+\\)[ \t]*\\]\n*$"
-	 (point-at-eol) t)
+  (when (re-search-forward poly-asciidoc:source-lang-regexp
+			   (point-at-eol) t)
     (let ((lang (match-string-no-properties 1)))
       (poly-asciidoc-get-lang-mode lang))))
 
+;; define inner mode for source block
 (define-auto-innermode poly-asciidoc:source-code-innermode
   poly-asciidoc-root-innermode
   :head-matcher 'poly-asciidoc:source-head-matcher
