@@ -47,44 +47,43 @@
 ;; NOTICE:
 ;; avoid duplicated name
 (defun poly-asciidoc/graphviz-mode-matcher ()
-    "graphviz-mode")
+  "graphviz-mode")
 
 (defun poly-asciidoc/unsupport-mode-matcher ()
-    "text-mode")
+  "text-mode")
 
-(defmacro gen-innermode-defs-fun () 
-  `(lambda ()
-     '(("ditaa" . (lambda () "artist-mode"))
-       ("plantuml" . (lambda () "plantuml-mode"))
-       ("mermaid" . (lambda () "mermaid-mode"))
-       ("gnuplot" . (lambda () "gnuplot-mode"))
-       ("actdiag" . 'poly-asciidoc/graphviz-mode-matcher)
-       ("blockdiag" . 'poly-asciidoc/graphviz-mode-matcher)
-       ("graphviz" . 'poly-asciidoc/graphviz-mode-matcher)
-       ("nwdiag" . 'poly-asciidoc/graphviz-mode-matcher)
-       ("seqdiag" . 'poly-asciidoc/graphviz-mode-matcher)
-       ("bpmn" . 'poly-asciidoc/unsupport-mode-matcher)
-       ("bytefield" . 'poly-asciidoc/unsupport-mode-matcher)
-       ("dpic"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("erd"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("meme"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("msc"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("nomnoml"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("packetdiag"  . 'poly-asciidoc/graphviz-mode-matcher)
-       ("pikchr"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("rackdiag"  . 'poly-asciidoc/graphviz-mode-matcher)
-       ("shaape"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("smcat"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("svgbob"  . (lambda () "artist-mode"))
-       ("syntrax"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("umlet"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("vega"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("vegalite"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("wavedrom"  . 'poly-asciidoc/unsupport-mode-matcher)
-       ("a2s" . 'poly-asciidoc/unsupport-mode-matcher))))
+(defvar innermode-defs 
+  '(("ditaa" . (lambda () "artist-mode"))
+    ("plantuml" . (lambda () "plantuml-mode"))
+    ("mermaid" . (lambda () "mermaid-mode"))
+    ("gnuplot" . (lambda () "gnuplot-mode"))
+    ("actdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+    ("blockdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+    ("graphviz" . 'poly-asciidoc/graphviz-mode-matcher)
+    ("nwdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+    ("seqdiag" . 'poly-asciidoc/graphviz-mode-matcher)
+    ("bpmn" . 'poly-asciidoc/unsupport-mode-matcher)
+    ("bytefield" . 'poly-asciidoc/unsupport-mode-matcher)
+    ("dpic"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("erd"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("meme"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("msc"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("nomnoml"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("packetdiag"  . 'poly-asciidoc/graphviz-mode-matcher)
+    ("pikchr"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("rackdiag"  . 'poly-asciidoc/graphviz-mode-matcher)
+    ("shaape"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("smcat"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("svgbob"  . (lambda () "artist-mode"))
+    ("syntrax"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("umlet"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("vega"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("vegalite"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("wavedrom"  . 'poly-asciidoc/unsupport-mode-matcher)
+    ("a2s" . 'poly-asciidoc/unsupport-mode-matcher)))
 
 (defvar asciidoc-diagram-tags
-  (cl-loop for mode in (funcall (gen-innermode-defs-fun))
+  (cl-loop for mode in innermode-defs
 	   collect (car mode))
   "tags which need asciidoctor-diagram")
 
@@ -107,16 +106,15 @@
        :tail-matcher ',(poly-asciidoc-mkfun tag "tail" "matcher")
        :mode-matcher ',(poly-asciidoc-mkfun tag "mode" "matcher"))))
 
-(defmacro poly-asciidoc-mk-innermodes! (modes-gen-func)
-  `(let ((mode_lst_func (,modes-gen-func)))
-     `(progn
-	,@(cl-loop for mode in (funcall mode_lst_func)
-		   collect `(poly-asciidoc-innermode!
-			     ,(car mode)
-			     ,(cdr mode))))))
+(defmacro poly-asciidoc-mk-innermodes! (modes)
+  `(progn
+     ,@(cl-loop for mode in modes
+		collect `(poly-asciidoc-innermode!
+			  ,(car mode)
+			  ,(cdr mode)))))
 
 (defvar poly-asciidoc-code-innermodes
-  (cl-loop for mode in (funcall (gen-innermode-defs-fun))
+  (cl-loop for mode in innermode-defs
 	   collect (poly-asciidoc-mkfun (car mode) "code" "innermode"))
   "Generate list of -code-innermode")
 
@@ -276,16 +274,18 @@
       (cons (match-beginning 0)
 	    (match-end 0)))))
 
-(eval 
- (poly-asciidoc-mk-innermodes! gen-innermode-defs-fun))
+(defmacro poly-asciidoc-mk-all-innermodes! ()
+  `(poly-asciidoc-mk-innermodes! ,innermode-defs))
+
+(poly-asciidoc-mk-all-innermodes!)
 
 ;;;###autoload  (autoload 'poly-asciidoc-mode "poly-asciidoc")
 (define-polymode poly-asciidoc-mode
   :hostmode 'poly-asciidoc-hostmode
   :innermodes (cons 'poly-asciidoc:source-code-innermode
 		    poly-asciidoc-code-innermodes
-                ;;
-		))
+		    ;;
+		    ))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.adoc\\'" . poly-asciidoc-mode))
